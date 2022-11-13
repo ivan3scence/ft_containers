@@ -25,17 +25,18 @@ namespace ft
 		pointer										_ptr;
 		size_type									_size;
 		size_type									_capacity;
+		allocator_type								_allocator;
 	public:
-		vector(void) : _ptr(nullptr), _size(0), _capacity(0)
-		{
-			return ;
-		}
+		vector(void) : _ptr(nullptr), _size(0), _capacity(0) {}
 
-//		explicit vector(const Allocator &alloc);
+		explicit vector(const allocator_type &alloc) : _ptr(nullptr), _size(0), _capacity(0), _allocator(alloc) {}
 //
 //		explicit vector(size_type count,
 //						const T &value = T(),
-//						const Allocator &alloc = Allocator());
+//						const Allocator &alloc = Allocator()) : _size(count), _allocator(alloc)
+//		{
+//			_ptr = new value_type[count];
+//		}
 //
 //		template<class InputIt>
 //			vector(InputIt first, InputIt last,
