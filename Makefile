@@ -6,13 +6,13 @@ NAME_SHORT	= vector
 INCS_DIR	= ./include/
 MAIN_INC	= -I$(INCS_DIR)
 
-INC			= vector/Vector.hpp
+INC			= vector.hpp iterator.hpp
 
 INCS		= $(addprefix ${INCS_DIR}, ${INC})
 
 SRCS_DIR 	= ./src/
 
-SRC			= main.cpp vector/Vector.cpp
+SRC			= main.cpp vector/vector.cpp iterator/iterator.cpp
 
 SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 
