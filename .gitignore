@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+.idea
+.vscode
+lol.c
+vector
 # Compiled Object files
 *.slo
 *.lo
