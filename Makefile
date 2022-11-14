@@ -1,4 +1,7 @@
-CC			= c++ -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
+CC			= c++ -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g -D MACOS=1
+ifeq (${MAKECMDGOALS}, l)
+CC 			=	c++	 -Wall -Wextra -Werror -g -fsanitize=address -D LINUX=1
+endif
 RM			= rm -rf
 NAME		= ./vector
 NAME_SHORT	= vector
@@ -22,6 +25,8 @@ OBJS		= $(SRCS:.cpp=.o)
 			$(CC) $(MAIN_INC) -c $< -o $@
 
 all			: $(NAME)
+
+l				: all
 
 $(NAME)		: $(OBJS)
 			$(CC) $(MAIN_INC) $(OBJS) -o $(NAME)
