@@ -31,64 +31,64 @@ public:
   VectorIterator(const VectorIterator &other) : _ptr(other.base()) {}
   pointer &base(void) { return (_ptr); }
   VectorIterator &operator=(const VectorIterator &other) {
-    if (this == *other)
-      return (*this);
-    _ptr = other.base();
-    return (*this);
+	if (this == *other)
+	  return (*this);
+	_ptr = other.base();
+	return (*this);
   }
   reference operator*(void) const { return (*this->_ptr); }
   pointer operator->(void) const { return (this->_ptr); }
   value_type operator[](int val) const { return (*(_ptr + val)); }
   VectorIterator operator++(void) {
-    ++this->_ptr;
-    return (*this);
+	++this->_ptr;
+	return (*this);
   }
   VectorIterator operator++(int) {
-    VectorIterator tmp(*this);
+	VectorIterator tmp(*this);
 
-    ++this->_ptr;
-    return (tmp);
+	++this->_ptr;
+	return (tmp);
   }
   VectorIterator operator--(void) {
-    --this->_ptr;
-    return (*this);
+	--this->_ptr;
+	return (*this);
   }
   VectorIterator operator--(int) {
-    VectorIterator tmp(*this);
+	VectorIterator tmp(*this);
 
-    --this->_ptr;
-    return (tmp);
+	--this->_ptr;
+	return (tmp);
   }
   VectorIterator operator+=(int val) {
-    this->_ptr += val;
-    return (*this);
+	this->_ptr += val;
+	return (*this);
   }
   VectorIterator operator-=(int val) {
-    this->_ptr -= val;
-    return (*this);
+	this->_ptr -= val;
+	return (*this);
   }
   VectorIterator operator-(int val) { return (*this->_ptr - val); }
   VectorIterator operator+(int val) { return (*this->_ptr + val); }
   difference_type operator-(VectorIterator const &other) const {
-    return (this->_ptr - other.base());
+	return (this->_ptr - other.base());
   }
   bool operator==(VectorIterator const &other) const {
-    return (this->_ptr == other.base());
+	return (this->_ptr == other.base());
   }
   bool operator!=(VectorIterator const &other) const {
-    return (!(*this == other));
+	return (!(*this == other));
   }
   bool operator<(VectorIterator const &other) const {
-    return (this->_ptr < other.base());
+	return (this->_ptr < other.base());
   }
   bool operator>(VectorIterator const &other) const {
-    return (this->_ptr > other.base());
+	return (this->_ptr > other.base());
   }
   bool operator>=(VectorIterator const &other) const {
-    return (this->_ptr >= other.base());
+	return (this->_ptr >= other.base());
   }
   bool operator<=(VectorIterator const &other) const {
-    return (this->_ptr <= other.base());
+	return (this->_ptr <= other.base());
   }
 };
 

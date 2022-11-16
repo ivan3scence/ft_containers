@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <memory>
 //#include <deque>
 
 //#if 1 //CREATE A REAL STL EXAMPLE
@@ -46,7 +47,14 @@ struct Buffer
 //};
 
 int main(int argc, char** argv) {
-	ft::vector<int> vec;
+	ft::vector<int> vec(3,3);
+	ft::vector<int, std::allocator<int>> v3c;
+	std::cout << v3c.getCapacity() << ":" << v3c.size() << "\n";
+	std::cout << vec.getCapacity() << ":" << vec.size() << "\n";
+	v3c = vec;
+	std::cout << v3c.getCapacity() << ":" << v3c.size() << "\n";
+	std::cout << vec.getCapacity() << ":" << vec.size() << "\n";
+
 	(void)argc;
 	(void)argv;
 //	if (argc != 2)

@@ -17,11 +17,17 @@ SRCS_DIR 	= ./src/
 
 SRC			= main.cpp vector/vector.cpp iterator/iterator.cpp
 
+TMP_DIR 	= ./templates/
+
+TMP 		= vector.tcc
+
+TMPS		= $(addprefix ${TMP_DIR}, ${TMP})
+
 SRCS		= $(addprefix ${SRCS_DIR}, ${SRC})
 
 OBJS		= $(SRCS:.cpp=.o)
 
-%.o			: %.cpp $(INCS) Makefile
+%.o			: %.cpp $(INCS) Makefile $(TMPS)
 			$(CC) $(MAIN_INC) -c $< -o $@
 
 all			: $(NAME)

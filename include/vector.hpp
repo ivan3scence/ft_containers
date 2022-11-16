@@ -3,10 +3,12 @@
 
 #include "iterator.hpp"
 #include <memory>
+#include <cstring>
 
 namespace ft {
+
 #ifdef LINUX
-	typedef unsigned int	nullptr;
+	//typedef unsigned int	nullptr;
 #endif
 
 template <class T, class Allocator = std::allocator<T>> class vector {
@@ -21,7 +23,7 @@ public:
   typedef const value_type &const_reference;
 
   typedef struct s_vector_impl {
-	pointer start;
+	pointer	start;
 	pointer finish;
 	pointer end;
   } t_vector_impl;
@@ -44,27 +46,29 @@ public:
 	  : _ptr(), _size(0), _capacity(0), _allocator(alloc) {}
 
   explicit vector(size_type count, const T &value = T(),
-				  const Allocator &alloc = Allocator())
-	  : _size(count), _allocator(alloc) {
-	_capacity = count < 10000 ? 2 * count : count;
-	this->_ptr.start = this->_allocator.allocate(this->_capacity);
-	this->_ptr.finish = this->_ptr.start;
-	this->_ptr.end = this->_ptr.start + _capacity;
-  }
+				  const Allocator &alloc = Allocator());
 
-  template <class InputIt>
-  vector(InputIt first, InputIt last, const Allocator &alloc = Allocator());
+  //template <class InputIt>
+  //vector(InputIt first, InputIt last, const Allocator &alloc = Allocator());
 
   vector(const vector &other);
 
   ~vector(void) {
 	if (this->_ptr.start)
-	  this->_ptr.start.deallocate(_allocator, this->_ptr.start,
+	  this->_allocator.deallocate(this->_ptr.start, 
 								  this->_ptr.end - this->_ptr.start);
   }
 
-  //		vector &operator=(const vector &other);
-
+  	vector &operator=(const vector &other);
+	pointer	getPtrStart(void) const;
+	pointer getPtrEnd(void) const;
+	size_type getPtrSize(void) const;
+	t_vector_impl	getPtr(void) const;
+	allocator_type	getAllocator(void) const;
+	size_type	getCapacity(void) const;
+	void	copyPtrAttr(t_vector_impl &dst, t_vector_impl const &src);
+	size_type	size(void) const;
+	pointer	getPtrFinish(void) const;
   //		allocator_type get_allocator() const;
   //
   //		void assign(size_t count, const T &value);
@@ -185,5 +189,7 @@ public:
   //		void swap(vector &other);
 };
 } // namespace ft
+
+#include "../templates/vector.tcc"
 
 #endif
