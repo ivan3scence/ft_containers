@@ -7,11 +7,11 @@
 //	#include <map>
 //	#include <stack>
 //	#include <vector>
-//	namespace ft = std;
+	//namespace ft = std;
 //#else
 //	#include <map.hpp>
 //	#include <stack.hpp>
-	#include "vector.hpp"
+#include "vector.hpp"
 //#endif
 
 #include <stdlib.h>
@@ -47,13 +47,13 @@ struct Buffer
 //};
 
 int main(int argc, char** argv) {
-	ft::vector<int> vec(3,3);
-	ft::vector<int, std::allocator<int>> v3c;
-	std::cout << v3c.getCapacity() << ":" << v3c.size() << "\n";
-	std::cout << vec.getCapacity() << ":" << vec.size() << "\n";
-	v3c = vec;
-	std::cout << v3c.getCapacity() << ":" << v3c.size() << "\n";
-	std::cout << vec.getCapacity() << ":" << vec.size() << "\n";
+	ft::vector<int> vec(static_cast<size_t>(7),3);
+	ft::vector<int, std::allocator<int> > v3c;
+	//v3c = vec;
+	std::cout << vec << std::endl;
+	vec.assign(static_cast<size_t>(5), 4);
+	std::cout << vec << std::endl;
+//	std::cout << vec;
 
 	(void)argc;
 	(void)argv;
