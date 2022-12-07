@@ -107,11 +107,6 @@ typename vector<T, Allocator>::t_vector_impl	vector<T, Allocator>::getPtr(void) 
 }
 
 template < typename T, typename Allocator >
-typename vector<T, Allocator>::size_type	vector<T, Allocator>::size(void) const
-{
-	return (this->_size);
-}
-template < typename T, typename Allocator >
 typename vector<T, Allocator>::pointer	vector<T, Allocator>::getPtrFinish(void) const
 {
 	return (this->_ptr.current);
@@ -165,20 +160,6 @@ void vector<T, Allocator>::assign(InputIt first, InputIt last)
 }
 
 template < typename T, typename Allocator >
-void	vector<T, Allocator>::clear(void)
-{
-	int size;
-
-	size = static_cast<int>(this->_size);
-	for (int i = 0; i < size; ++i)
-	{
-		this->_allocator.destroy(this->_ptr.start + i);
-	}
-	this->_ptr.current -= size;
-	this->_size -= size;
-}
-
-template < typename T, typename Allocator >
 T&	vector<T, Allocator>::at(size_type pos)
 {
 	if (pos > this->_size || pos < 0)
@@ -195,7 +176,7 @@ T const &	vector<T, Allocator>::at(size_type pos) const
 }
 
 template < typename T, typename Allocator >
-T&	vector<T, Allocator>::operator [] (size_type pos)
+typename vector<T, Allocator>::reference	vector<T, Allocator>::operator [] (size_type pos)
 {
 	if (pos > this->_size || pos < 0)
 		throw std::out_of_range("vector at out of range");
@@ -203,10 +184,143 @@ T&	vector<T, Allocator>::operator [] (size_type pos)
 }
 
 template < typename T, typename Allocator >
-T const &	vector<T, Allocator>::operator [] (size_type pos) const
+typename vector<T, Allocator>::const_reference	vector<T, Allocator>::operator [] (size_type pos) const
 {
 	if (pos > this->_size || pos < 0)
 		throw std::out_of_range("vector at out of range");
 	return (*(this->_ptr.start + pos));
 }
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::reference	vector<T, Allocator>::front(void)
+{
+	return (*(this->_ptr.start));
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::const_reference	vector<T, Allocator>::front(void) const
+{
+	return (*(this->_ptr.start));
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::reference	vector<T, Allocator>::back(void)
+{
+	return (*(this->_ptr.start + this->_ptr.current));
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::const_reference	vector<T, Allocator>::back(void) const
+{
+	return (*(this->_ptr.start + this->_ptr.current));
+}
+
+template < typename T, typename Allocator >
+const T	*vector<T, Allocator>::data(void) const
+{
+	return (this->_ptr.start);
+}
+
+template < typename T, typename Allocator >
+T	*vector<T, Allocator>::data(void)
+{
+	return (this->_ptr.start);
+}
+
+//template < typename T, typename Allocator >
+//typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::begin(void) const
+//{
+//	return (const_iterator(this->_ptr.start));
+//}
+
+
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::iterator	vector<T, Allocator>::begin(void)
+{
+	return (iterator(this->_ptr.start));
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::begin(void) const
+{
+	return (const_iterator(this->_ptr.start));
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::iterator	vector<T, Allocator>::end(void)
+{
+	return (iterator(this->_ptr.start + this->_size));
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::end(void) const
+{
+	return (const_iterator(this->_ptr.start + this->_size));
+}
+
+
+template < typename T, typename Allocator >
+bool	vector<T, Allocator>::empty(void) const
+{
+	return (this->_ptr.start == this->_current);
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::size_type	vector<T, Allocator>::size(void) const
+{
+	return (this->_size);
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::size_type	vector<T, Allocator>::max_size(void) const
+{
+	return (this->_allocator.max_size());
+}
+
+template < typename T, typename Allocator >
+void	vector<T, Allocator>::reserve(size_type new_cap)
+{
+	if (this->_capacity >= new_cap)
+		return ;
+	vector<value_type, allocator_type>	tmp(new_cap, this->_allocator);
+	tmp = *this;
+	*this = tmp;
+}
+
+template < typename T, typename Allocator >
+typename vector<T, Allocator>::size_type	vector<T, Allocator>::capacity(void) const
+{
+	return (this->_capacity);
+}
+
+template < typename T, typename Allocator >
+void	vector<T, Allocator>::clear(void)
+{
+	for (size_type i=0; i<this->_size; ++i)
+		_allocator.destroy(this->_ptr.start + i);
+	_size = 0;
+	this->_ptr.current = this->_ptr.start;
+}
+
+//template < typename T, typename Allocator >
+//typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(const_iterator pos, const T &value)
+//{
+//	if (pos < this->begin() || pos > this->end())
+//		std::logic_error("wrong pos\n");
+//	if (this->_size == this->_capacity)
+//		this->reserve(this->_size + 1);
+//	const_iterator	end = this->end();
+//	value_type		tmp = *pos;
+//	*pos = value;
+//	while (pos != end)
+//	{
+//		tmp = pos[0];
+//		*pos = value;
+//		value = pos[1];
+//		pos[1] = tmp;
+//		++pos;
+//	}
+//}
+
 }

@@ -7,7 +7,7 @@
 //	#include <map>
 //	#include <stack>
 //	#include <vector>
-	//namespace ft = std;
+//	namespace ft = std;
 //#else
 //	#include <map.hpp>
 //	#include <stack.hpp>
@@ -50,11 +50,18 @@ int main(int argc, char** argv) {
 	ft::vector<int> vec(static_cast<size_t>(7),3);
 	ft::vector<int, std::allocator<int> > v3c;
 	//v3c = vec;
-	std::cout << vec << std::endl;
+//	std::cout << vec << std::endl;
 	vec.assign(static_cast<size_t>(5), 4);
-	std::cout << vec << std::endl;
-//	std::cout << vec;
+	//std::cout << vec << std::endl;
+//	std::cout << vec[2] << ":" << vec.front() << std::endl;
+//	ft::vector<int>::iterator	it(vec.begin());
+//	vec.begin()[1] = 0;
+//	std::cout << *(vec.begin()) << vec.begin()[1] << std::endl;
+//	std::cout << *it << it[1] << std::endl;
 
+//	ft::vector<int>::iterator	it(vec.end());
+//	std::cout << *it << it[1] << std::endl;
+	std::cout << *vec.end() << *(vec.end()+1) << std::endl;
 	(void)argc;
 	(void)argv;
 //	if (argc != 2)
