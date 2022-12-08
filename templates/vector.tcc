@@ -227,14 +227,6 @@ T	*vector<T, Allocator>::data(void)
 	return (this->_ptr.start);
 }
 
-//template < typename T, typename Allocator >
-//typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::begin(void) const
-//{
-//	return (const_iterator(this->_ptr.start));
-//}
-
-
-
 template < typename T, typename Allocator >
 typename vector<T, Allocator>::iterator	vector<T, Allocator>::begin(void)
 {
@@ -283,7 +275,7 @@ void	vector<T, Allocator>::reserve(size_type new_cap)
 {
 	if (this->_capacity >= new_cap)
 		return ;
-	vector<value_type, allocator_type>	tmp(new_cap, this->_allocator);
+	vector<value_type, allocator_type>	tmp(new_cap, 0, this->_allocator);
 	tmp = *this;
 	*this = tmp;
 }
@@ -303,24 +295,58 @@ void	vector<T, Allocator>::clear(void)
 	this->_ptr.current = this->_ptr.start;
 }
 
-//template < typename T, typename Allocator >
-//typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(const_iterator pos, const T &value)
-//{
-//	if (pos < this->begin() || pos > this->end())
-//		std::logic_error("wrong pos\n");
-//	if (this->_size == this->_capacity)
-//		this->reserve(this->_size + 1);
-//	const_iterator	end = this->end();
-//	value_type		tmp = *pos;
-//	*pos = value;
+template < typename T, typename Allocator >
+typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, const T &value)
+{
+//	value_type		tmp;
+//	value_type		tmp2 = value;
+	iterator		end = this->end();
+	iterator		begin = this->begin();
+	iterator		ret = pos - 1;
+
+	if (pos < begin || pos-- > end)
+	{
+		std::logic_error("wrong pos\n");
+		return (pos);
+	}
+	if (this->_size == this->_capacity)
+		this->reserve(this->_size + 1);
+	for (unsigned int i = end - begin - 1; i >= pos - begin; --i)
+	{
+		*(this->_ptr.start + i + 1) = *(this->_ptr.start + i);
+	}
+	*pos = value;
 //	while (pos != end)
 //	{
 //		tmp = pos[0];
-//		*pos = value;
-//		value = pos[1];
-//		pos[1] = tmp;
-//		++pos;
+//		*(pos++) = tmp2;
+//		tmp2 = tmp;
 //	}
-//}
+	return (ret);
+}
+
+template < typename T, typename Allocator >
+typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, size_type count, const T &value)
+{
+	iterator		end = this->end();
+	iterator		begin = this->begin();
+	iterator		ret = pos - count;
+
+	if (pos < begin || pos > end || count > pos - begin)
+	{
+		std::logic_error("wrong pos\n");
+		return (pos);
+	}
+	if (this->_size + count <= this->_capacity)
+		this->reserve(this->_size + count);
+	for (iterator i = end; i >= pos; --i)
+	{
+		*i = *(i - count);
+		//*(this->_ptr.start + i) = *(this->_ptr.start + i - count);
+	}
+	while (count-- > 0)
+		*(--pos) = value;
+	return (pos);
+}
 
 }

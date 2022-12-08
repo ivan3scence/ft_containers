@@ -61,9 +61,20 @@ int main(int argc, char** argv) {
 
 //	ft::vector<int>::iterator	it(vec.end());
 //	std::cout << *it << it[1] << std::endl;
-	std::cout << *vec.end() << *(vec.end()+1) << std::endl;
+//	std::cout << *vec.end() << *(vec.end()+1) << std::endl;
+
+//	std::cout << vec << std::endl;
+//	vec.insert(vec.begin() + 3, 228);
+//	std::cout << vec;
+
+
+	std::cout << vec << std::endl;
+	vec.insert(vec.begin() + 3, 3, 228);
+	std::cout << vec;
+
 	(void)argc;
 	(void)argv;
+
 //	if (argc != 2)
 //	{
 //		std::cerr << "Usage: ./test seed" << std::endl;

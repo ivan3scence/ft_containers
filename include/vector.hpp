@@ -59,12 +59,19 @@ public:
 //	}
     pointer base(void) const { return (_ptr); }
 	//const_pointer &base(void) const { return (_ptr); }
+
     RandomAccessIterator<value_type> &operator=(const RandomAccessIterator<value_type> &other) {
 		if (this == &other)
 		    return (*this);
 		_ptr = other.base();
 		return (*this);
     }
+
+    RandomAccessIterator<value_type> &operator=(const RandomAccessIterator<const value_type> &other) {
+		_ptr = other.base();
+		return (*this);
+    }
+
     reference operator*(void) { return (*_ptr); }
     pointer operator->(void) const { return (this->_ptr); }
     reference operator[](difference_type val) { return (*(_ptr + val)); }
@@ -208,9 +215,9 @@ public:
 	size_type capacity() const;
   //		// Modifiers
 	void clear();
-//	iterator insert(const_iterator pos, const T &value);
-//	iterator insert(const_iterator pos, size_type count, const T
-//  					&value);
+	iterator insert(iterator pos, const T &value);
+	iterator insert(iterator pos, size_type count, const T
+  					&value);
   //
   //		template<class InputIt>
   //		iterator insert(const_iterator pos, InputIt first, InputIt
