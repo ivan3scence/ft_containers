@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 
 //
 	std::cout << vec << std::endl;
-	vec.insert(vec.begin() + 3, 3, 228);
+	vec.insert(vec.begin() + 3, 33, 228);
 	std::cout << vec;
 
 //	ft::vector<int>			vv(static_cast<size_t>(7), 1);

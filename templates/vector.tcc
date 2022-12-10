@@ -278,7 +278,7 @@ void	vector<T, Allocator>::reserve(size_type new_cap)
 	vector<value_type, allocator_type>	tmp(new_cap, 0, this->_allocator);
 	tmp = *this;
 	*this = tmp;
-	_capacity = this->end - this->start;
+	_capacity = this->_ptr.end - this->_ptr.start;
 }
 
 template < typename T, typename Allocator >
@@ -325,18 +325,22 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos
 	iterator		begin = this->begin();
 	iterator		ret = pos - count;
 
-	if (pos < begin || pos > end || count > pos - begin)
+	if (pos < begin || pos > end || count
+		> this->_size + this->_allocator.max_size())
 	{
 		std::logic_error("wrong pos\n");
 		return (pos);
 	}
 	this->reserve(this->_size + count);
-	for (iterator i = end + count; i >= pos; --i)
+	for (iterator i = end; i >= pos; --i)
 	{
-		*i = *(i - count);
+		std::cout << &(*end) << " " << this->_ptr.end << " " << this->_ptr.start<< " "<< &(*(i+count)) << " ";
+		*(i + count) = *i;
 	}
-	while (count-- > 0)
-		*(--pos) = value;
+	std::cout << "\n\n\n\nfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\n\n\n\n\n";
+	this->_size += count;
+	while (count > 0)
+		*(pos + (--count)) = value;
 	return (pos);
 }
 
