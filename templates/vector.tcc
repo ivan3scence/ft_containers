@@ -278,6 +278,7 @@ void	vector<T, Allocator>::reserve(size_type new_cap)
 	vector<value_type, allocator_type>	tmp(new_cap, 0, this->_allocator);
 	tmp = *this;
 	*this = tmp;
+	_capacity = this->end - this->start;
 }
 
 template < typename T, typename Allocator >
@@ -298,8 +299,6 @@ void	vector<T, Allocator>::clear(void)
 template < typename T, typename Allocator >
 typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, const T &value)
 {
-//	value_type		tmp;
-//	value_type		tmp2 = value;
 	iterator		end = this->end();
 	iterator		begin = this->begin();
 	iterator		ret = pos - 1;
@@ -316,12 +315,6 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos
 		*(this->_ptr.start + i + 1) = *(this->_ptr.start + i);
 	}
 	*pos = value;
-//	while (pos != end)
-//	{
-//		tmp = pos[0];
-//		*(pos++) = tmp2;
-//		tmp2 = tmp;
-//	}
 	return (ret);
 }
 
@@ -337,16 +330,38 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos
 		std::logic_error("wrong pos\n");
 		return (pos);
 	}
-	if (this->_size + count <= this->_capacity)
-		this->reserve(this->_size + count);
-	for (iterator i = end; i >= pos; --i)
+	this->reserve(this->_size + count);
+	for (iterator i = end + count; i >= pos; --i)
 	{
 		*i = *(i - count);
-		//*(this->_ptr.start + i) = *(this->_ptr.start + i - count);
 	}
 	while (count-- > 0)
 		*(--pos) = value;
 	return (pos);
 }
+
+//template < typename T, typename Allocator >
+//template < class InputIt >
+//typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, InputIt first, InputIt last)
+//{
+//	iterator		end = this->end();
+//	iterator		begin = this->begin();
+//	size_type		len = last - first;
+//	iterator		ret = pos - len;
+//
+//	if (pos < begin || pos > end || first > last || len > pos - begin)
+//	{
+//		std::logic_error("wrong pos\n");
+//		return (pos);
+//	}
+//		this->reserve(this->_size + len);
+//	for (iterator i = end; i >= pos; --i)
+//	{
+//		*i = *(i - len);
+//	}
+//	while (len-- > 0)
+//		*(--pos) = len;
+//	return (ret);
+//}
 
 }

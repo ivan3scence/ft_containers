@@ -218,10 +218,8 @@ public:
 	iterator insert(iterator pos, const T &value);
 	iterator insert(iterator pos, size_type count, const T
   					&value);
-  //
-  //		template<class InputIt>
-  //		iterator insert(const_iterator pos, InputIt first, InputIt
-  // last);
+//  	template<class InputIt>
+//  	iterator insert(iterator pos, InputIt first, InputIt last);
   //
   //		iterator erase(iterator pos);
   //
