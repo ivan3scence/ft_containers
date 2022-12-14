@@ -59,10 +59,10 @@ vector<T, Allocator>	&vector<T, Allocator>::operator = (vector<T, Allocator>
 	//	this->_allocator = other->_allocator;
 	size_type const	o_size = other.size();
 	size_type const	o_capacity = other.capacity();
-	std::cout << o_capacity << " o_cap\n";
+//	std::cout << o_capacity << " o_cap\n";
 	if (this->_capacity < o_capacity)
 	{
-		std::cout<<"first\n\n\n";
+//		std::cout<<"first\n\n\n";
 		pointer	tmp = this->_allocator.allocate(o_capacity);
 //		std::memmove(tmp, other.getPtrStart(), o_size);
 		copy_array(tmp, other.getPtrStart(), o_size);
@@ -76,7 +76,7 @@ vector<T, Allocator>	&vector<T, Allocator>::operator = (vector<T, Allocator>
 	}
 	else if (this->_size >= o_size)
 	{
-		std::cout<<"second\n\n\n";
+//		std::cout<<"second\n\n\n";
 		this->_allocator.destroy(this->_ptr.start);
 //		std::memmove(this->_ptr.start, other.getPtrStart(), o_size);
 		copy_array(this->getPtrStart(), other.getPtrStart(), o_size);
@@ -290,12 +290,12 @@ void	vector<T, Allocator>::reserve(size_type new_cap)
 		return ;
 	vector<value_type, allocator_type>	tmp(new_cap, 0, this->_allocator);
 	tmp = *this;
-	std::cout << tmp.size()<<"\n\n";
-	std::cout << tmp.capacity()<<"\n\n";
+//	std::cout << tmp.size()<<"\n\n";
+//	std::cout << tmp.capacity()<<"\n\n";
 //tmp._ptr.current = tmp._ptr.start + (this->_ptr.current - this->_ptr.start);
 	*this = tmp;
-	std::cout << this->size()<<"\n\n";
-	std::cout << this->capacity()<<"\n\n";
+//	std::cout << this->size()<<"\n\n";
+//	std::cout << this->capacity()<<"\n\n";
 //	_capacity = this->_ptr.end - this->_ptr.start;
 }
 
@@ -339,62 +339,77 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos
 template < typename T, typename Allocator >
 typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, size_type count, const T &value)
 {
-	iterator		end = this->end();
 	iterator		begin = this->begin();
-	iterator		ret = pos - count;
 	pointer			pos_n;
 	size_type		pos_nu = pos - begin;
 
-	if (pos < begin || pos > end || count
+	if (pos < begin || pos > this->end() || count
 		> this->_size + this->_allocator.max_size())
 	{
 		std::logic_error("wrong pos\n");
 		return (pos);
 	}
 	this->reserve(this->_size + count);
-//	std::cout << this->size()<< std::endl << this->_capacity << std::endl<<*this<<"\n";
 	pos_n = this->_ptr.start + pos_nu;
-	std::cout << "current: " << this->_ptr.current - this->_ptr.start << "\n";
-	std::cout << "pos_n: " << pos_n - this->_ptr.start << "\n";
-//	std::memmove(pos_n + count, pos_n, this->_ptr.current - pos_n + 1);
 	for (pointer i = pos_n; i <= this->_ptr.current; ++i)
 		*(i + count) = *i;
-//	for (pointer i = this->_ptr.current; i > this->_ptr.start + pos_nu; --i)
-//	{
-//		std::cout << i << " " << this->_ptr.end << " " << this->_ptr.start<< " "<< i+count << "\n";
-//		*(i + count) = *i;
-//	}
 	this->_size += count;
 	this->_ptr.current += count;
-	std::cout << "lol: " << *this << "\n";
 	for (size_type i = 0; i < count; ++i)
 		*(pos_n + i) = value;
-	std::cout << "size: " << this->size() << "\n";
-	return (pos);
+	return (pos_n);
 }
 
-//template < typename T, typename Allocator >
-//template < class InputIt >
-//typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, InputIt first, InputIt last)
-//{
-//	iterator		end = this->end();
+template < typename T, typename Allocator >
+template < class InputIt >
+typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos, InputIt first, InputIt last)
+{
 //	iterator		begin = this->begin();
-//	size_type		len = last - first;
-//	iterator		ret = pos - len;
+//	pointer			pos_n;
+//	size_type		pos_nu = pos - begin;
 //
-//	if (pos < begin || pos > end || first > last || len > pos - begin)
+//	if (pos < begin || pos > this->end() || count
+//		> this->_size + this->_allocator.max_size())
 //	{
 //		std::logic_error("wrong pos\n");
 //		return (pos);
 //	}
-//		this->reserve(this->_size + len);
+//	this->reserve(this->_size + count);
+//	pos_n = this->_ptr.start + pos_nu;
+//	for (pointer i = pos_n; i <= this->_ptr.current; ++i)
+//		*(i + count) = *i;
+//	this->_size += count;
+//	this->_ptr.current += count;
+//	for (size_type i = 0; i < count; ++i)
+//		*(pos_n + i) = value;
+//	return (pos_n);
+
+
+
+	iterator		end = this->end();
+	iterator		begin = this->begin();
+	size_type		len = last - first;
+	pointer			pos_n;
+	size_type		pos_nu = pos - begin;
+
+	if (pos < begin || pos > end || first > last)
+	{
+		std::logic_error("wrong pos\n");
+		return (pos);
+	}
+	this->reserve(this->_size + len);
+	pos_n = this->_ptr.start + pos_nu;
+	for (pointer i = pos_n; i <= this->_ptr.current; ++i)
+		*(i + len) = *i;
 //	for (iterator i = end; i >= pos; --i)
 //	{
 //		*i = *(i - len);
 //	}
-//	while (len-- > 0)
-//		*(--pos) = len;
-//	return (ret);
-//}
+	this->_size += len;
+	this->_ptr.current += len;
+	while (first != last)
+		*(pos_n++) = *(first++);
+	return (pos_n - len);
+}
 
 }

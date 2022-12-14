@@ -70,13 +70,15 @@ int main(int argc, char** argv) {
 //	std::cout << vec;
 
 //
-	std::cout << vec << std::endl;
-	vec.insert(vec.begin() + 3, 33, 228);
-	std::cout << vec;
+//	std::cout << vec << std::endl;
+//	vec.insert(vec.begin() + 3, 333, 228);
+//	std::cout << vec;
 
 //	ft::vector<int>			vv(static_cast<size_t>(7), 1);
+//	for (int i = 0; i < 6; ++i)
+//		vv[i] = i;
 //	ft::vector<int>::iterator	it=vv.begin();
-//	ft::vector<int>::iterator	last = it + 2;
+//	ft::vector<int>::iterator	last = it + 6;
 //	std::cout << vec << std::endl;
 //	vec.insert(vec.begin() + 3, it, last);
 //	std::cout << vec;
