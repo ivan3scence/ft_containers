@@ -50,10 +50,10 @@ int main(int argc, char** argv) {
 	(void)argc;
 	(void)argv;
 	ft::vector<int> vec(static_cast<size_t>(7),3);
-	ft::vector<int, std::allocator<int> > v3c;
+//	ft::vector<int, std::allocator<int> > v3c;
 	//v3c = vec;
 //	std::cout << vec << std::endl;
-	vec.assign(static_cast<size_t>(5), 4);
+//	vec.assign(static_cast<size_t>(5), 4);
 	//std::cout << vec << std::endl;
 //	std::cout << vec[2] << ":" << vec.front() << std::endl;
 //	ft::vector<int>::iterator	it(vec.begin());
@@ -82,6 +82,14 @@ int main(int argc, char** argv) {
 //	std::cout << vec << std::endl;
 //	vec.insert(vec.begin() + 3, it, last);
 //	std::cout << vec;
+
+
+	for (size_t i = 0; i < vec.size(); ++i)
+		vec[i] = i;
+	std::cout << vec << "\n";
+	vec.erase(vec.begin() + 6);
+	std::cout << vec << "\n";
+
 
 //	if (argc != 2)
 //	{
