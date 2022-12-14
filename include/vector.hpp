@@ -279,8 +279,9 @@ private:
 	size_type		getPtrSize(void) const;
 	t_vector_impl	getPtr(void) const;
 	size_type		getCapacity(void) const;
-	pointer			getPtrFinish(void) const;
+	pointer			getPtrCurrent(void) const;
 	void			copyPtrAttr(t_vector_impl &dst, t_vector_impl const &src);
+	void			copy_array(pointer dst, pointer src, size_type count);
 };
 
 template < typename T, typename Allocator >

@@ -42,6 +42,14 @@ vector<T, Allocator>::vector(InputIt first, InputIt last, const allocator_type &
 }
 
 template < typename T, typename Allocator >
+void	vector<T, Allocator>::copy_array(typename vector<T,Allocator>::pointer dst, typename vector<T,Allocator>::pointer src,
+							typename vector<T,Allocator>::size_type count)
+{
+	for (size_type i = 0; i < count; ++i)
+		*(dst + i) = *(src + i);
+}
+
+template < typename T, typename Allocator >
 vector<T, Allocator>	&vector<T, Allocator>::operator = (vector<T, Allocator>
 	const &other)
 {
@@ -50,32 +58,37 @@ vector<T, Allocator>	&vector<T, Allocator>::operator = (vector<T, Allocator>
 	//if (this->_allocator.propagate_on_container_move_assignment != true)
 	//	this->_allocator = other->_allocator;
 	size_type const	o_size = other.size();
-	if (this->_capacity < o_size)
+	size_type const	o_capacity = other.capacity();
+	std::cout << o_capacity << " o_cap\n";
+	if (this->_capacity < o_capacity)
 	{
-		pointer	tmp = this->_allocator.allocate(o_size);
-		std::memmove(tmp, other.getPtrStart(), other.getPtrFinish()
-				- other.getPtrStart());
+		std::cout<<"first\n\n\n";
+		pointer	tmp = this->_allocator.allocate(o_capacity);
+//		std::memmove(tmp, other.getPtrStart(), o_size);
+		copy_array(tmp, other.getPtrStart(), o_size);
 		this->_allocator.destroy(this->_ptr.start);
-		this->_allocator.deallocate(this->_ptr.start, this->_ptr.end
-				- this->_ptr.start);
+		this->_allocator.deallocate(this->_ptr.start, this->capacity());
 		this->_ptr.start = tmp;
-		copyPtrAttr(this->_ptr, other.getPtr());
-		//this->_ptr.end = tmp + o_size;
+		this->_ptr.current = tmp + o_size - 1;
+		this->_ptr.end = tmp + o_capacity - 1;
 		this->_size = o_size;
-		this->_capacity = o_size;
+		this->_capacity = o_capacity;
 	}
 	else if (this->_size >= o_size)
 	{
+		std::cout<<"second\n\n\n";
 		this->_allocator.destroy(this->_ptr.start);
-		std::memmove(this->_ptr.start, other.getPtrStart(), other.getPtrEnd()
-				- other.getPtrStart());
-		copyPtrAttr(this->_ptr, other.getPtr());
+//		std::memmove(this->_ptr.start, other.getPtrStart(), o_size);
+		copy_array(this->getPtrStart(), other.getPtrStart(), o_size);
+		this->_ptr.current = this->_ptr.start + o_size - 1;
+		this->_size = o_size;
 	}
 	else
 	{
-		std::memmove(this->_ptr.start, other.getPtrStart(), other.getPtrEnd()
-				- other.getPtrStart());
-		copyPtrAttr(this->_ptr, other.getPtr());
+//		std::memmove(this->_ptr.start, other.getPtrStart(), o_size);
+		copy_array(this->getPtrStart(), other.getPtrStart(), o_size);
+		this->_ptr.current = this->_ptr.start + o_size - 1;
+		this->_size = o_size;
 	}
 	return (*this);
 }
@@ -107,7 +120,7 @@ typename vector<T, Allocator>::t_vector_impl	vector<T, Allocator>::getPtr(void) 
 }
 
 template < typename T, typename Allocator >
-typename vector<T, Allocator>::pointer	vector<T, Allocator>::getPtrFinish(void) const
+typename vector<T, Allocator>::pointer	vector<T, Allocator>::getPtrCurrent(void) const
 {
 	return (this->_ptr.current);
 }
@@ -277,8 +290,13 @@ void	vector<T, Allocator>::reserve(size_type new_cap)
 		return ;
 	vector<value_type, allocator_type>	tmp(new_cap, 0, this->_allocator);
 	tmp = *this;
+	std::cout << tmp.size()<<"\n\n";
+	std::cout << tmp.capacity()<<"\n\n";
+//tmp._ptr.current = tmp._ptr.start + (this->_ptr.current - this->_ptr.start);
 	*this = tmp;
-	_capacity = this->_ptr.end - this->_ptr.start;
+	std::cout << this->size()<<"\n\n";
+	std::cout << this->capacity()<<"\n\n";
+//	_capacity = this->_ptr.end - this->_ptr.start;
 }
 
 template < typename T, typename Allocator >
@@ -324,6 +342,8 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos
 	iterator		end = this->end();
 	iterator		begin = this->begin();
 	iterator		ret = pos - count;
+	pointer			pos_n;
+	size_type		pos_nu = pos - begin;
 
 	if (pos < begin || pos > end || count
 		> this->_size + this->_allocator.max_size())
@@ -332,15 +352,24 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::insert(iterator pos
 		return (pos);
 	}
 	this->reserve(this->_size + count);
-	for (iterator i = end; i >= pos; --i)
-	{
-		std::cout << &(*end) << " " << this->_ptr.end << " " << this->_ptr.start<< " "<< &(*(i+count)) << " ";
+//	std::cout << this->size()<< std::endl << this->_capacity << std::endl<<*this<<"\n";
+	pos_n = this->_ptr.start + pos_nu;
+	std::cout << "current: " << this->_ptr.current - this->_ptr.start << "\n";
+	std::cout << "pos_n: " << pos_n - this->_ptr.start << "\n";
+//	std::memmove(pos_n + count, pos_n, this->_ptr.current - pos_n + 1);
+	for (pointer i = pos_n; i <= this->_ptr.current; ++i)
 		*(i + count) = *i;
-	}
-	std::cout << "\n\n\n\nfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\n\n\n\n\n";
+//	for (pointer i = this->_ptr.current; i > this->_ptr.start + pos_nu; --i)
+//	{
+//		std::cout << i << " " << this->_ptr.end << " " << this->_ptr.start<< " "<< i+count << "\n";
+//		*(i + count) = *i;
+//	}
 	this->_size += count;
-	while (count > 0)
-		*(pos + (--count)) = value;
+	this->_ptr.current += count;
+	std::cout << "lol: " << *this << "\n";
+	for (size_type i = 0; i < count; ++i)
+		*(pos_n + i) = value;
+	std::cout << "size: " << this->size() << "\n";
 	return (pos);
 }
 
