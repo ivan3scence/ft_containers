@@ -6,12 +6,12 @@
 //#if 1 //CREATE A REAL STL EXAMPLE
 //	#include <map>
 //	#include <stack>
-//	#include <vector>
-//	namespace ft = std;
+	#include <vector>
+	namespace ft = std;
 //#else
 //	#include <map.hpp>
 //	#include <stack.hpp>
-#include "vector.hpp"
+//#include "vector.hpp"
 //#endif
 
 #include <stdlib.h>
@@ -84,13 +84,20 @@ int main(int argc, char** argv) {
 //	std::cout << vec;
 
 
+//	for (size_t i = 0; i < vec.size(); ++i)
+//		vec[i] = i;
+//	std::cout << vec << "\n";
+//	vec.erase(vec.begin() + 6);
+//	std::cout << vec << "\n";
 	for (size_t i = 0; i < vec.size(); ++i)
 		vec[i] = i;
-	std::cout << vec << "\n";
-	vec.erase(vec.begin() + 6);
-	std::cout << vec << "\n";
+//	std::cout << vec << "\n";
+	vec.erase(vec.end()-1, vec.end());
+//	std::cout << vec << "\n";
 
-
+for(ft::vector<int>::iterator i=vec.begin(); i != vec.end(); ++i)
+	std::cout << *i << ":";
+	std::cout << *(vec.end()-1) << ":";
 //	if (argc != 2)
 //	{
 //		std::cerr << "Usage: ./test seed" << std::endl;

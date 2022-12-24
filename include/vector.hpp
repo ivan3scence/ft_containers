@@ -221,8 +221,7 @@ public:
   	template<class InputIt>
   	iterator insert(iterator pos, InputIt first, InputIt last);
 	iterator erase(iterator pos);
-  //
-  //		iterator erase(iterator first, iterator last);
+	iterator erase(iterator first, iterator last);
   //
   //		void push_back(const T &value);
   //

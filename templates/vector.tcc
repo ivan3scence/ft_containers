@@ -405,4 +405,24 @@ typename vector<T,Allocator>::iterator	vector<T, Allocator>::erase(iterator pos)
 	return (pos);
 }
 
+
+template < typename T, typename Allocator >
+typename vector<T,Allocator>::iterator	vector<T, Allocator>::erase(iterator first, iterator last) {
+	if (first < this->begin() || last > this->end() || last < first) {
+		std::logic_error("wrong pos\n");
+		return (this->begin());
+	}
+
+	if (first != this->end()) {
+		for (iterator i = first; i != last; ++i)
+			*i = *(i + (last - first));
+	}
+	for (difference_type i = 0; i < last -first; ++i)
+	{
+		this->_allocator.destroy(this->_ptr.current--);
+	}
+	this->_size = this->_ptr.current - this->_ptr.start + 1;
+	return (first);
+}
+
 }
